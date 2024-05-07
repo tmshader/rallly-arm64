@@ -15,12 +15,12 @@ jobs:
         id: extractGitBranch
         run: echo "branchName=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   id: buildx
+      #   uses: docker/setup-buildx-action@v3
 
       - name: Docker meta
         id: meta
@@ -36,11 +36,15 @@ jobs:
       #     username: ${{ secrets.DOCKER_USERNAME }}
       #     password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: 'Login to GitHub Container Registry'
+        run: |
+          echo $CR_PAT | docker login ghcr.io -u <Your-GitHub-username> --password-stdin
+
       - name: Build and publish image
         uses: docker/build-push-action@v5
         with:
           file: ./apps/web/Dockerfile
-          platforms: linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
