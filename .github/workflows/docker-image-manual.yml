@@ -5,6 +5,8 @@ jobs:
   publish:
     name: Build and publish Docker image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
