@@ -4,7 +4,8 @@ on: workflow_dispatch
 jobs:
   publish:
     name: Build and publish Docker image
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       packages: write
     steps:
@@ -47,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           file: ./apps/web/Dockerfile
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
